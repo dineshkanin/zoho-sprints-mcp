@@ -1,6 +1,6 @@
 {
     "name": "zoho-sprints-mcp",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "MCP (Model Context Protocol) server for Zoho Sprints – Manage workspaces, projects, sprints, items, epics, releases, timesheets, meetings, users, and more through natural language.",
     "keywords": [
         "mcp",
@@ -46,7 +46,8 @@
         "typescript": "^5.8.3"
     },
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=20.0.0",
+        "npm": ">=10.0.0"
     },
     "repository": {
         "type": "git",

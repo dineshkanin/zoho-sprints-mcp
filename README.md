@@ -1,6 +1,12 @@
 # Zoho Sprints MCP Server
 
+[![GitHub stars](https://img.shields.io/github/stars/Dineshkanin/zoho-sprints-mcp?style=social)](https://github.com/Dineshkanin/zoho-sprints-mcp/stargazers)
+[![npm version](https://img.shields.io/npm/v/zoho-sprints-mcp)](https://www.npmjs.com/package/zoho-sprints-mcp)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 A Model Context Protocol (MCP) server that provides comprehensive access to the [Zoho Sprints](https://www.zoho.com/sprints/) agile project management API.
+
+> If you find this useful, please ⭐ star this repo — it helps others discover it!
 
 ## Features
 
