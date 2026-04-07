@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/zoho-sprints-mcp)](https://www.npmjs.com/package/zoho-sprints-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Model Context Protocol (MCP) server that provides comprehensive access to the [Zoho Sprints](https://www.zoho.com/sprints/) agile project management API.
+A Model Context Protocol (MCP) server that lets AI assistants like Claude, ChatGPT, GitHub Copilot, and Cursor manage your [Zoho Sprints](https://www.zoho.com/sprints/) projects through natural language. Instead of clicking through the UI, just tell your AI what you need — create items, plan sprints, log time, and more.
 
 > If you find this useful, please ⭐ star this repo — it helps others discover it!
 
@@ -15,18 +15,18 @@ A Model Context Protocol (MCP) server that provides comprehensive access to the 
 - **4 MCP Resources**: Health Check, Config, Projects List, Team Members
 - **Error handling**: Structured error responses with `isError` flag for AI self-correction
 - **Response formatting**: LLM-friendly output with pagination info and error highlighting
-- **Dual transport**: Stdio (VS Code, Claude Desktop, Cursor) and HTTP/SSE (ChatGPT, remote clients)
 - **Multi-domain support**: Works with all 7 Zoho data centers (`.com`, `.eu`, `.in`, `.com.au`, `.com.cn`, `.jp`, `.sa`)
 - **Auto token refresh**: Proactive refresh every 57 minutes + reactive refresh on 401 responses
-- **Rate limiting**: Built-in token-bucket rate limiter with dynamic sync from `x-rate-limit` response header
-- **Retry with backoff**: Automatic exponential backoff retry on transient errors (429, 5xx, network failures)
-- **Retry budget**: Caps total retries across all concurrent requests (10/min) to prevent thundering herd
 - **Input validation**: Reusable validators for dates, IDs, enums, JSON arrays with clear error messages
 - **Response caching**: In-memory TTL cache (60 s) for GET requests – automatic invalidation on writes
-- **Auto-pagination**: `getAll()` helper to fetch all pages of paginated endpoints automatically
 - **Debug mode**: Enable `ZOHO_SPRINTS_DEBUG=true` to log all HTTP requests/responses to stderr
 - **Custom Zoho headers**: `X-ZA-CONVERT-RESPONSE`, `X-ZA-UI-VERSION`, `X-ZA-REQSIZE` sent on every request
-- **TypeScript**: Full type safety with strict mode
+
+## Prerequisites
+
+- **Node.js 20+** and **npm 10+** — [Download here](https://nodejs.org/)
+- **Zoho Sprints account** — [Sign up](https://www.zoho.com/sprints/)
+- **Zoho OAuth credentials** (Client ID, Client Secret, Refresh Token) — [How to get them](#how-to-get-client-id-client-secret--refresh-token)
 
 ## Installation
 
@@ -39,6 +39,18 @@ Or use directly with npx:
 ```bash
 npx zoho-sprints-mcp
 ```
+
+## Quick Start
+
+1. **Get your Zoho OAuth credentials** — Follow the [guide below](#how-to-get-client-id-client-secret--refresh-token) to get your Client ID, Client Secret, and Refresh Token
+2. **Add the MCP server to your AI client** — Copy the config for your client ([Claude](#claude-desktop) / [VS Code](#vs-code) / [Cursor](#cursor) / [ChatGPT](#chatgpt-remote--http-mode)) and replace the placeholder values with your credentials
+3. **Start talking to your AI** — Ask things like:
+   - *"Show all my active sprints"*
+   - *"Create a new bug item in Project X"*
+   - *"What items are overdue?"*
+   - *"Log 2 hours on item #1234"*
+
+That's it — no server setup, no coding required. The MCP server runs automatically when your AI client starts.
 
 ## Configuration
 
@@ -453,44 +465,24 @@ Pre-built workflow templates that guide AI clients through common multi-step ope
 | `plan_sprint`            | `projectId`, `sprintName`, `duration?` | Guided workflow: create sprint → add backlog items → assign users → start             |
 | `daily_standup`          | `projectId`, `sprintId`                | Standup report: done, in progress, to do, and potential blockers                      |
 
-## Development
-
-```bash
-# Clone and install
-git clone https://github.com/your-username/zoho-sprints-mcp.git
-cd zoho-sprints-mcp
-npm install
-
-# Build
-npm run build
-
-# Run locally (stdio – for VS Code, Claude Desktop, Cursor)
-ZOHO_SPRINTS_REFRESH_TOKEN=your-token ZOHO_SPRINTS_CLIENT_ID=your-id ZOHO_SPRINTS_CLIENT_SECRET=your-secret npm start
-
-# Run locally (HTTP – for ChatGPT, remote clients)
-ZOHO_SPRINTS_REFRESH_TOKEN=your-token ZOHO_SPRINTS_CLIENT_ID=your-id ZOHO_SPRINTS_CLIENT_SECRET=your-secret npm run start:http
-
-# Test in browser (MCP Inspector)
-npm run testrun
-
-# Development mode (watch)
-npm run dev
-```
-
-## MCP Resources
-
-The server exposes read-only MCP Resources that clients can subscribe to:
-
-| Resource URI                  | Description                                                                                         |
-| ----------------------------- | --------------------------------------------------------------------------------------------------- |
-| `zoho-sprints://health`       | Server health & diagnostics (uptime, rate limiter usage, cache size, token status, request metrics) |
-| `zoho-sprints://config`       | Live server configuration (domain, team ID, debug mode, rate limiter & retry budget status)         |
-| `zoho-sprints://projects`     | List of all projects in the current workspace                                                       |
-| `zoho-sprints://team-members` | List of all team members in the current workspace                                                   |
-
 ## Rate Limiting, Retry & Caching
 
 Rate limiting, automatic retries with exponential backoff, and response caching are all handled internally — no configuration needed.
+
+## Example Prompts
+
+Here are some things you can ask your AI assistant once the server is connected:
+
+| What you say | What happens |
+|---|---|
+| *"List all my projects"* | Fetches all projects from your Zoho Sprints workspace |
+| *"Show items in the current sprint of Project X"* | Lists all work items in the active sprint |
+| *"Create a task called 'Fix login bug' in Project X"* | Creates a new work item |
+| *"Move item #1234 to the next sprint"* | Moves an item between sprints |
+| *"Log 3 hours on item #1234 for today"* | Adds a timesheet entry |
+| *"What are my overdue items?"* | Uses the built-in prompt to find overdue work across all projects |
+| *"Give me a standup report for Sprint 5"* | Summarizes done, in-progress, and to-do items |
+| *"Create an epic called 'Q3 Launch' and link items to it"* | Creates an epic and associates work items |
 
 ## Debug Mode
 
