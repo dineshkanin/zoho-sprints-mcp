@@ -1,6 +1,6 @@
 # Zoho Sprints MCP Server
 
-[![GitHub stars](https://img.shields.io/github/stars/Dineshkanin/zoho-sprints-mcp?style=social)](https://github.com/Dineshkanin/zoho-sprints-mcp/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/dineshkanin/zoho-sprints-mcp?style=social)](https://github.com/dineshkanin/zoho-sprints-mcp/stargazers)
 [![npm version](https://img.shields.io/npm/v/zoho-sprints-mcp)](https://www.npmjs.com/package/zoho-sprints-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
